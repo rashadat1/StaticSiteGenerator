@@ -68,7 +68,7 @@ class HTMLNode:
         return_string = ""
         if self.props:
             for key, val in self.props.items():
-                return_string += f" {key}={val}"
+                return_string += f' {key}="{val}"'
         return return_string
 
     def __repr__(self):
