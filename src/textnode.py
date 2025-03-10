@@ -1,6 +1,8 @@
 from enum import Enum
 from typing import Optional
 
+from leafnode import LeafNode
+
 
 class TextType(Enum):
     """
@@ -15,12 +17,12 @@ class TextType(Enum):
         IMAGE_TEXT: Represents an image with alt text.
     """
 
-    NORMAL_TEXT = 1
-    BOLD_TEXT = 2
-    ITALIC_TEXT = 3
-    CODE_TEXT = 4
-    LINK_TEXT = 5
-    IMAGE_TEXT = 6
+    TEXT = 1
+    BOLD = 2
+    ITALIC = 3
+    CODE = 4
+    LINK = 5
+    IMAGE = 6
 
 
 class TextNode:
@@ -67,3 +69,36 @@ class TextNode:
 
     def __repr__(self):
         return f"TextNode({self.text},{self.text_type.value},{self.url})"
+
+
+def text_node_to_html_node(text_node: TextNode) -> LeafNode:
+    """
+    Converts a TextNode to an HTMLNode (specifically a LeafNode).
+    
+    Args:
+        text_node: The TextNode to convert
+        
+    Returns:
+        LeafNode: A new LeafNode with properties based on the TextNode's type
+        
+    Raises:
+        AssertionError: If URL is missing for LINK or IMAGE types
+        ValueError: If the TextNode has an unsupported TextType
+    """
+    text_type = text_node.text_type
+    match (text_type):
+        case TextType.TEXT:
+            return LeafNode(value=text_node.text)
+        case TextType.BOLD:
+            return LeafNode(value=text_node.text, tag="b")
+        case TextType.ITALIC:
+            return LeafNode(value=text_node.text, tag="i")
+        case TextType.CODE:
+            return LeafNode(value=text_node.text, tag="code")
+        case TextType.LINK:
+            assert text_node.url is not None
+            return LeafNode(value=text_node.text, tag="a", props={"href": text_node.url})
+        case TextType.IMAGE:
+            assert text_node.url is not None
+            return LeafNode(value="", tag="img", props={"src": text_node.url, "alt": text_node.text})
+
