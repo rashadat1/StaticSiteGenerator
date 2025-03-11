@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from utility import split_nodes_delimiter
+from utility import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 
 class TestTextNode(unittest.TestCase):
@@ -40,7 +40,12 @@ class TestSplitDelimiter(unittest.TestCase):
     def test_bold(self):
         old_nodes = [TextNode("This is sample text", TextType.TEXT), TextNode("BlahBlah Blah", TextType.ITALIC), TextNode("This is **also sample text** haha big dawg", TextType.TEXT), TextNode("This text is bold type", TextType.BOLD)]
         self.assertEqual(split_nodes_delimiter(old_nodes, "**", TextType.BOLD), [TextNode("This is sample text", TextType.TEXT), TextNode("BlahBlah Blah", TextType.ITALIC), TextNode("This is ", TextType.TEXT), TextNode("also sample text", TextType.BOLD), TextNode(" haha big dawg", TextType.TEXT), TextNode("This text is bold type", TextType.BOLD)])
-
-
+    
+    def test_extract_images(self):
+        matches = extract_markdown_images("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg) ![random](https://www.google.com)")
+        self.assertListEqual([("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg"), ("random", "https://www.google.com")], matches)
+    def test_extract_links(self):
+        matches = extract_markdown_links("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)")
+        self.assertListEqual([("to boot dev", "https://www.boot.dev"),("to youtube", "https://www.youtube.com/@bootdotdev")], matches)
 if __name__ == "__main__":
     unittest.main()
