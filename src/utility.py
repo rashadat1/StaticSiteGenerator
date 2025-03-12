@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 from textnode import TextNode, TextType
 from functools import reduce
 import re
@@ -21,7 +21,7 @@ def split_nodes_delimiter(old_nodes: List[TextNode], delimiter: str, text_type: 
 
     return list(filter(lambda t: t.text, list(reduce(lambda x, y: x + ([y] if y.text_type != TextType.TEXT else list(map(lambda i_z: TextNode(i_z[1], text_type if i_z[0] % 2 else TextType.TEXT), enumerate(y.text.split(delimiter))))), old_nodes, []))))
 
-def extract_markdown_images(text: str):
+def extract_markdown_images(text: str) -> List[Tuple[str,str]]:
     """
     Extracts all markdown image references from a text string.
     
@@ -39,7 +39,7 @@ def extract_markdown_images(text: str):
     matches = re.findall(r"!\[([^\[\]]*)\]\(([^\[\]\(\)]*)\)", text)
     return matches
 
-def extract_markdown_links(text: str):
+def extract_markdown_links(text: str) -> List[Tuple[str,str]]:
     """
     Extracts all markdown links from a text string.
     
@@ -56,4 +56,75 @@ def extract_markdown_links(text: str):
     """
     matches = re.findall(r"\[([^\[\]]*)\]\(([^\[\]\(\)]*)\)", text)
     return matches
+
+def append_nodes_helper(lst1: List[TextNode], lst2: List[TextNode]) -> List[TextNode]:
+    i, j = 0, 0
+    nodes_in_order = []
+    while i < len(lst1) and j < len(lst2):
+        nodes_in_order.append(lst1[i])
+        nodes_in_order.append(lst2[j])
+        i += 1
+        j += 1
+    while i < len(lst1):
+        nodes_in_order.append(lst1[i])
+        i += 1
+    while j < len(lst2):
+        nodes_in_order.append(lst2[j])
+        j += 1
+    return nodes_in_order
+
+def split_nodes_image(old_nodes: List[TextNode]) -> List[TextNode]:
+    result = []
+    def helper(node: TextNode) -> List[TextNode]:
+        intermediate = node.text
+        image_parts = extract_markdown_images(node.text)
+        for i in range(len(image_parts)):
+            intermediate = ("seqbreakabc".join(intermediate.split(f"![{image_parts[i][0]}]({image_parts[i][1]})")))
+        non_image_parts = intermediate.split("seqbreakabc")
+        
+        non_image_text_nodes = [TextNode(text=text_frag, text_type=TextType.TEXT) for text_frag in non_image_parts]
+        image_text_nodes = [TextNode(text=altText, text_type=TextType.IMAGE, url=urlText) for altText, urlText in image_parts]
+        
+        if node.text.startswith(non_image_parts[0]):
+            lst1 = non_image_text_nodes
+            lst2 = image_text_nodes
+        else:
+            lst1 = image_text_nodes
+            lst2 = non_image_text_nodes
+        result = append_nodes_helper(lst1, lst2)
+        return result
+     
+    for node in old_nodes:
+        result.extend(helper(node))
+    
+    return result
+
+def split_nodes_link(old_nodes: List[TextNode]) -> List[TextNode]:
+    result = []
+    def helper(node: TextNode) -> List[TextNode]:
+        intermediate = node.text
+        link_parts = extract_markdown_images(node.text)
+        for i in range(len(link_parts)):
+            intermediate = ("seqbreakabc".join(intermediate.split(f"[{link_parts[i][0]}]({link_parts[i][1]})")))
+        non_link_parts = intermediate.split("seqbreakabc")
+        
+        non_link_text_nodes = [TextNode(text=text_frag, text_type=TextType.TEXT) for text_frag in non_link_parts]
+        link_text_nodes = [TextNode(text=altText, text_type=TextType.LINK, url=urlText) for altText, urlText in link_parts]
+        
+        if node.text.startswith(non_link_parts[0]):
+            lst1 = non_link_text_nodes
+            lst2 = link_text_nodes
+        else:
+            lst1 = link_text_nodes
+            lst2 = non_link_text_nodes
+        result = append_nodes_helper(lst1, lst2)
+        return result
+     
+    for node in old_nodes:
+        result.extend(helper(node))
+    
+    return result 
+
+
+
 
