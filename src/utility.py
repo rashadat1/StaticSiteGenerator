@@ -61,15 +61,19 @@ def append_nodes_helper(lst1: List[TextNode], lst2: List[TextNode]) -> List[Text
     i, j = 0, 0
     nodes_in_order = []
     while i < len(lst1) and j < len(lst2):
-        nodes_in_order.append(lst1[i])
-        nodes_in_order.append(lst2[j])
+        if lst1[i].text:
+            nodes_in_order.append(lst1[i])
+        if lst2[j].text:
+            nodes_in_order.append(lst2[j])
         i += 1
         j += 1
     while i < len(lst1):
-        nodes_in_order.append(lst1[i])
+        if lst1[i].text:
+            nodes_in_order.append(lst1[i])
         i += 1
     while j < len(lst2):
-        nodes_in_order.append(lst2[j])
+        if lst2[j].text:
+            nodes_in_order.append(lst2[j])
         j += 1
     return nodes_in_order
 
@@ -103,7 +107,7 @@ def split_nodes_link(old_nodes: List[TextNode]) -> List[TextNode]:
     result = []
     def helper(node: TextNode) -> List[TextNode]:
         intermediate = node.text
-        link_parts = extract_markdown_images(node.text)
+        link_parts = extract_markdown_links(node.text)
         for i in range(len(link_parts)):
             intermediate = ("seqbreakabc".join(intermediate.split(f"[{link_parts[i][0]}]({link_parts[i][1]})")))
         non_link_parts = intermediate.split("seqbreakabc")
@@ -127,4 +131,11 @@ def split_nodes_link(old_nodes: List[TextNode]) -> List[TextNode]:
 
 
 
+if __name__ == "__main__":
+    node = TextNode(
+    "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
+    TextType.TEXT)
+
+    new_nodes = split_nodes_link([node])
+    print(new_nodes)
 
