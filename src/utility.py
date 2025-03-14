@@ -148,6 +148,9 @@ def text_to_textnodes(text: str) -> List[TextNode]:
         result = split_nodes_delimiter(result, delimiter, textType)
     return result
 
+def markdown_to_blocks(markdown: str) -> List[str]:
+    blocks = markdown.split("\n\n")
+    return list(filter(lambda block: block != "" and block != "\n", list(map(lambda block: block.strip(), blocks))))
 
 if __name__ == "__main__":
     node = TextNode(
