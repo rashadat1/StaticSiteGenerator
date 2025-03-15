@@ -2,15 +2,44 @@ from enum import Enum
 import re
 
 class BlockType(Enum):
-    PARAGRAPH = 1,
-    HEADING = 2,
-    CODE = 3,
-    QUOTE = 4,
-    UNORDERED_LIST = 5,
+    """
+    Enum representing the different types of markdown blocks.
+    
+    Attributes:
+        PARAGRAPH (int): Regular paragraph text.
+        HEADING (int): Heading text starting with # (1-6 hash symbols).
+        CODE (int): Code block enclosed in triple backticks.
+        QUOTE (int): Quote block where each line starts with >.
+        UNORDERED_LIST (int): List where each line starts with "- ".
+        ORDERED_LIST (int): List where each line starts with a number followed by ". ".
+    """
+    PARAGRAPH = 1
+    HEADING = 2
+    CODE = 3
+    QUOTE = 4
+    UNORDERED_LIST = 5
     ORDERED_LIST = 6
 
 
 def block_to_block_type(markdown: str) -> BlockType:
+    """
+    Determines the type of a markdown block.
+    
+    Args:
+        markdown (str): A single block of markdown text with leading/trailing whitespace removed.
+    
+    Returns:
+        BlockType: The type of the markdown block.
+        
+    Rules:
+        - Headings start with 1-6 # characters, followed by a space and text.
+        - Code blocks start with three backticks and end with three backticks.
+        - Quote blocks have each line starting with a > character.
+        - Unordered lists have each line starting with "- " (hyphen and space).
+        - Ordered lists have each line starting with a number, period, and space (e.g., "1. ").
+          Numbers must start at 1 and increment by 1 for each line.
+        - If none of the above conditions are met, the block is a paragraph.
+    """
     header_match = re.findall("(^[#]{1,6} )", markdown)
     if header_match:
         return BlockType.HEADING
