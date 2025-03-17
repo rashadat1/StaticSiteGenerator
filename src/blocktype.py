@@ -1,6 +1,11 @@
 from enum import Enum
 import re
 
+from htmlnode import HTMLNode
+from parentnode import ParentNode
+from leafnode import LeafNode
+from utility import markdown_to_blocks, text_to_textnodes, text_to_children
+
 class BlockType(Enum):
     """
     Enum representing the different types of markdown blocks.
@@ -68,7 +73,52 @@ def block_to_block_type(markdown: str) -> BlockType:
     return BlockType.PARAGRAPH
 
     
+def markdown_to_html_node(markdown: str) -> HTMLNode:
+    blocks = markdown_to_blocks(markdown)
+    list_of_block_types = list(map(lambda x: block_to_block_type(x), blocks))
+    newChildrenHTMLNodes = []
+    for i, blockType in enumerate(list_of_block_types):
+        block_text = blocks[i]
+
+        if blockType == BlockType.HEADING:
+            num_hashes = len(re.findall("^[#]{1,6}", blocks[i])[0])
+            block_content = block_text[num_hashes + 1:]
+            leafNodes = text_to_children(block_content) 
+            newNode = HTMLNode(tag=f"h{num_hashes}", children=leafNodes)
+
+        elif blockType == BlockType.PARAGRAPH:
+            block_content = block_text
+            leafNodes = text_to_children(block_content)
+            newNode = HTMLNode(tag="p",children=leafNodes)
+            
+
+        elif blockType == BlockType.QUOTE:
+
+            newNode = HTMLNode(tag="blockquote")
 
 
 
-    
+        elif blockType == BlockType.ORDERED_LIST:
+            list_items = [HTMLNode(tag="li")]
+            newNode = HTMLNode(tag="ol")
+
+        elif blockType == BlockType.UNORDERED_LIST:
+            newNode = HTMLNode(tag="ul")
+
+        elif blockType == BlockType.CODE:
+            code_node = HTMLNode(tag="code")
+            newNode = HTMLNode(tag="pre", children=[code_node])
+
+        if blockType != BlockType.CODE:
+            # parse inline markdown in block content
+            ChildTextNodes = text_to_textnodes(block_content)
+            
+
+
+
+
+        
+            
+            
+            
+            

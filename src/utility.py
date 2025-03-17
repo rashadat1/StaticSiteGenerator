@@ -1,7 +1,8 @@
 from typing import List, Tuple
-from textnode import TextNode, TextType
+from textnode import TextNode, TextType, text_node_to_html_node
 from functools import reduce
 import re
+from leafnode import LeafNode
 
 def split_nodes_delimiter(old_nodes: List[TextNode], delimiter: str, text_type: TextType) -> List[TextNode]:
     """
@@ -151,6 +152,12 @@ def text_to_textnodes(text: str) -> List[TextNode]:
 def markdown_to_blocks(markdown: str) -> List[str]:
     blocks = markdown.split("\n\n")
     return list(filter(lambda block: block != "" and block != "\n", list(map(lambda block: block.strip(), blocks))))
+
+def text_to_children(text: str):
+    pureTextNodes = text_to_textnodes(text)
+    listLeafNodes = list(map(lambda x: text_node_to_html_node(x), pureTextNodes))
+    return listLeafNodes
+
 
 if __name__ == "__main__":
     node = TextNode(
