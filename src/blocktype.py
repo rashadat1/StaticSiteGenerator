@@ -1,5 +1,6 @@
 from enum import Enum
 import re
+from typing import List
 
 from htmlnode import HTMLNode
 from parentnode import ParentNode
@@ -76,43 +77,65 @@ def block_to_block_type(markdown: str) -> BlockType:
 def markdown_to_html_node(markdown: str) -> HTMLNode:
     blocks = markdown_to_blocks(markdown)
     list_of_block_types = list(map(lambda x: block_to_block_type(x), blocks))
-    newChildrenHTMLNodes = []
+    newChildrenHTMLNodes: List[HTMLNode] = []
+    
     for i, blockType in enumerate(list_of_block_types):
         block_text = blocks[i]
 
         if blockType == BlockType.HEADING:
-            num_hashes = len(re.findall("^[#]{1,6}", blocks[i])[0])
+            num_hashes = len(re.findall(r"^[#]{1,6}", blocks[i])[0])
             block_content = block_text[num_hashes + 1:]
             leafNodes = text_to_children(block_content) 
-            newNode = HTMLNode(tag=f"h{num_hashes}", children=leafNodes)
+            newNode = ParentNode(tag=f"h{num_hashes}", children=leafNodes)
+            newChildrenHTMLNodes.append(newNode)
 
         elif blockType == BlockType.PARAGRAPH:
             block_content = block_text
             leafNodes = text_to_children(block_content)
-            newNode = HTMLNode(tag="p",children=leafNodes)
+            newNode = ParentNode(tag="p",children=leafNodes)
+            newChildrenHTMLNodes.append(newNode)
             
 
         elif blockType == BlockType.QUOTE:
-
-            newNode = HTMLNode(tag="blockquote")
-
-
+            block_content = "\n".join([line[1:].strip() for line in block_text.split("\n")])
+            leafNodes = text_to_children(block_content)
+            newNode = ParentNode(tag="blockquote", children=leafNodes)
+            newChildrenHTMLNodes.append(newNode)
 
         elif blockType == BlockType.ORDERED_LIST:
-            list_items = [HTMLNode(tag="li")]
-            newNode = HTMLNode(tag="ol")
+            list_items = re.findall(r"^\d+\. (.+)", block_text, re.MULTILINE)
+            allHTMLNodes = [text_to_children(item) for item in list_items]
+            li_nodes = [HTMLNode(tag="li", children=allHTMLNodes[i]) for i in range(len(allHTMLNodes))]
+            
+            newNode = ParentNode(tag="ol", children=li_nodes)
+            newChildrenHTMLNodes.append(newNode)
 
         elif blockType == BlockType.UNORDERED_LIST:
-            newNode = HTMLNode(tag="ul")
+            list_items = re.findall(r"^[-] (.+)", block_text, re.MULTILINE)
+            allHTMLNodes = [text_to_children(item) for item in list_items]
+            li_nodes = [HTMLNode(tag="li", children=allHTMLNodes[i]) for i in range(len(allHTMLNodes))]
+            
+            newNode = ParentNode(tag="ul", children=li_nodes)
+            newChildrenHTMLNodes.append(newNode)
 
         elif blockType == BlockType.CODE:
-            code_node = HTMLNode(tag="code")
-            newNode = HTMLNode(tag="pre", children=[code_node])
+            block_content = re.findall(r"^`{3}([\s\S]+)`{3}$", block_text)[0]
+            code_node = HTMLNode(tag="code", value=block_content)
+            newNode = ParentNode(tag="pre", children=[code_node])
 
-        if blockType != BlockType.CODE:
-            # parse inline markdown in block content
-            ChildTextNodes = text_to_textnodes(block_content)
-            
+            newChildrenHTMLNodes.append(newNode)
+
+    finalHTMLNode = HTMLNode(tag="div", children=newChildrenHTMLNodes)
+    return finalHTMLNode
+
+
+
+    
+
+
+
+
+ 
 
 
 

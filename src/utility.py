@@ -1,4 +1,5 @@
-from typing import List, Tuple
+from typing import List, Tuple, cast
+from htmlnode import HTMLNode
 from textnode import TextNode, TextType, text_node_to_html_node
 from functools import reduce
 import re
@@ -153,9 +154,9 @@ def markdown_to_blocks(markdown: str) -> List[str]:
     blocks = markdown.split("\n\n")
     return list(filter(lambda block: block != "" and block != "\n", list(map(lambda block: block.strip(), blocks))))
 
-def text_to_children(text: str):
+def text_to_children(text: str) -> List[HTMLNode]:
     pureTextNodes = text_to_textnodes(text)
-    listLeafNodes = list(map(lambda x: text_node_to_html_node(x), pureTextNodes))
+    listLeafNodes = list(map(lambda x: cast(HTMLNode,text_node_to_html_node(x)), pureTextNodes))
     return listLeafNodes
 
 
