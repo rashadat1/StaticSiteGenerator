@@ -35,7 +35,10 @@ class ParentNode(HTMLNode):
             # base case we reach a leaf node and call its to_html method
             return self.to_html()
         return_string = f"<{self.tag}" + f"{self.props_to_html()}>"
+
         for child in self.children:
             return_string += child.to_html()
+        return_string = return_string.replace("\n", " ") if self.tag == "p" else return_string
+
         return_string += f"</{self.tag}>"
         return return_string

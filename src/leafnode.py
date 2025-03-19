@@ -38,6 +38,8 @@ class LeafNode(HTMLNode):
             return self.value
         return_string = ""
         return_string += f"<{self.tag}" + f"{self.props_to_html()}>{self.value}</{self.tag}>"
+        
+        return_string = return_string.replace("\n", " ") if self.tag == "p" else return_string
         return return_string
 
 

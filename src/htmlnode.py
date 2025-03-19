@@ -32,16 +32,27 @@ class HTMLNode:
 
     def to_html(self):
         """
-        Abstract method for converting the node into an HTML string.
 
-        This method should be overridden by subclasses. For the base `HTMLNode`,
-        it raises a NotImplementedError to indicate that this behavior is not defined
-        for the base class.
-
-        Raises:
-            NotImplementedError: This method must be implemented in a child class.
         """
-        raise NotImplementedError
+        # Base case: if no tag and has a value, it's pure textual
+        if not self.tag:
+            return self.value or ""
+
+        html = f"<{self.tag}{self.props_to_html()}>"
+
+        if self.value:
+            if self.tag == "p":
+                html += self.value.replace("\n", " ")
+            else:
+                html += self.value
+
+
+        for child in self.children:
+            html += child.to_html()
+
+        html += f"</{self.tag}>"
+        return html
+
 
     def props_to_html(self) -> str:
         """

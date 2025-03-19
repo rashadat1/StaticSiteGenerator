@@ -81,7 +81,7 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
     
     for i, blockType in enumerate(list_of_block_types):
         block_text = blocks[i]
-
+        block_text = block_text.strip()
         if blockType == BlockType.HEADING:
             num_hashes = len(re.findall(r"^[#]{1,6}", blocks[i])[0])
             block_content = block_text[num_hashes + 1:]
@@ -120,6 +120,7 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
 
         elif blockType == BlockType.CODE:
             block_content = re.findall(r"^`{3}([\s\S]+)`{3}$", block_text)[0]
+            block_content = block_content.lstrip()
             code_node = HTMLNode(tag="code", value=block_content)
             newNode = ParentNode(tag="pre", children=[code_node])
 
@@ -129,19 +130,90 @@ def markdown_to_html_node(markdown: str) -> HTMLNode:
     return finalHTMLNode
 
 
+if __name__ == "__main__":
+    md = """
+This is **bolded** paragraph
+text in a p
+tag here
 
-    
+This is another paragraph with _italic_ text and `code` here
+
+"""
+    node = markdown_to_html_node(md)
+    print("MD:\n")
+    print(md)
+    print()
+    print()
+    print("HTML Node from markdown:\n")
+    print(node)
+    print()
+    print()
+    html = node.to_html()
+    print("Output HTML:\n")
+    print(html)
+
+    md1 = """
+```
+This is text that _should_ remain
+the **same** even with inline stuff
+```
+"""
+
+    node1 = markdown_to_html_node(md1)
+    print("MD:\n")
+    print(md1)
+    print()
+    print()
+    print("HTML Node from markdown:\n")
+    print(node1)
+    print()
+    print()
+    html1 = node1.to_html()
+    print("Output HTML:\n")
+    print(html1)
 
 
+    md2 = """
+- Item 1
+- Item 2
+- Item 3
+"""
 
+    node2 = markdown_to_html_node(md2)
+    print("MD:\n")
+    print()
+    print()
+    print("HTML Node from markdown:\n")
+    print(node2)
+    print()
+    print()
+    html2 = node2.to_html()
+    print("Output HTML:\n")
+    print(html2)
 
- 
+    md3 = """
+# Heading 1
 
+This is a **bold** paragraph.
 
+> A blockquote with _italic_ text.
 
+- Item 1
+- Item 2
 
-        
-            
-            
-            
-            
+```
+Code block here
+```
+"""
+    node3 = markdown_to_html_node(md3)
+    print("MD:\n")
+    print(md3)
+    print()
+    print()
+    print("HTML Node from markdown:\n")
+    print(node3)
+    print()
+    print()
+    html3 = node3.to_html()
+    print("Output HTML:\n")
+    print(html3)
