@@ -1,13 +1,6 @@
-from textnode import TextNode, TextType
-
+from copy_to_public import copy_to_public
 
 def main():
-    newTextNode = TextNode(
-        text="This is some test text",
-        text_type=TextType.TEXT,
-        url="https://www.google.com",
-    )
-    print(newTextNode)
-
+    copy_to_public()
 
 main()

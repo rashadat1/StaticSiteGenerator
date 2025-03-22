@@ -52,20 +52,19 @@ class Directory:
                 stack.append((child,child.path))
 
 def copy_to_public():
-    project_directory = str(pathlib.Path(__file__).parent)
+    project_directory = str(pathlib.Path(__file__).parent.parent)
     from_path = os.path.join(project_directory, "static")
     to_path = os.path.join(project_directory, "public")
 
     print(f"Deleting {to_path} to prepare for copying")
     shutil.rmtree(to_path)
-    os.mkdir(to_path)
-    print(f"Finished deleting and creating fresh {to_path} directory")
 
     directory_tree = Directory(from_path)
     directory_tree.generate_file_structure() # create file tree structure in memory
     directory_tree.copy_to_dest(to_path) # recreate src directory file structure in dst
 
     print("Successfully completed src directory reconstruction")
+
 
 
 
