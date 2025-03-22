@@ -75,6 +75,49 @@ def block_to_block_type(markdown: str) -> BlockType:
 
     
 def markdown_to_html_node(markdown: str) -> HTMLNode:
+    """
+    Converts a given Markdown string into a tree of HTMLNode objects, 
+    representing the corresponding HTML structure.
+
+    This function processes the Markdown content block by block, identifies 
+    each block's type (heading, paragraph, blockquote, list, code), and 
+    recursively constructs a nested HTMLNode tree reflecting the structure 
+    and inline formatting.
+
+    Args:
+        markdown (str): The Markdown string input to be converted.
+
+    Returns:
+        HTMLNode: A root HTMLNode (div) containing child nodes that represent 
+        the parsed HTML structure of the Markdown content.
+
+    Workflow:
+        1. Split the Markdown into blocks (paragraphs, code, lists, etc.).
+        2. Determine the block type for each section.
+        3. For each block type:
+            - **Heading**: Parse heading level and wrap content in `<h1>`-`<h6>`.
+            - **Paragraph**: Wrap inline-formatted text in `<p>`.
+            - **Blockquote**: Strip the '>' characters, parse inline content, 
+              and wrap in `<blockquote>`.
+            - **Ordered List**: Parse numbered list items and wrap each in `<li>`, 
+              grouped inside `<ol>`.
+            - **Unordered List**: Parse dash-prefixed items and wrap each in `<li>`, 
+              grouped inside `<ul>`.
+            - **Code Block**: Extract the literal content, preserving formatting, 
+              and wrap it inside `<pre><code>`.
+        4. Inline Markdown elements (bold, italic, code spans) are processed via 
+           `text_to_children()` where applicable.
+        5. All top-level blocks are wrapped in a parent `<div>` node for encapsulation.
+
+    Example Usage:
+        html_node = markdown_to_html_node(markdown_string)
+        html_output = html_node.to_html()
+
+    Notes:
+        - Assumes blocks are pre-separated using double newlines.
+        - Relies on `text_to_children()` for processing inline formatting.
+        - Preserves code block formatting without parsing inline markdown.
+    """
     blocks = markdown_to_blocks(markdown)
     list_of_block_types = list(map(lambda x: block_to_block_type(x), blocks))
     newChildrenHTMLNodes: List[HTMLNode] = []
