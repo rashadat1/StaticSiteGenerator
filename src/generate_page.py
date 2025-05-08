@@ -55,7 +55,7 @@ def generate_page(from_path: str, template_path: str, dest_path: str) -> None:
     html_string = html_node.to_html()
 
     page_title = extract_title(markdown)
-
+    print("Page Title: " + page_title)
     new_template = template.replace("{{ Title }}", page_title).replace("{{ Content }}", html_string)
 
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)

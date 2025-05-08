@@ -1,17 +1,17 @@
 body {
-  background-color: #1f1c25;
-  color: #f0e6d1;
-  font-family: "Luminari", "Georgia", serif;
-  line-height: 1.7;
+  background-color: #f9f9f9;
+  color: #2b2b2b;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  line-height: 1.8;
   margin: 0;
-  padding: 20px;
+  padding: 40px 20px;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
 b {
-  font-weight: 900;
+  font-weight: 700;
 }
 
 h1,
@@ -20,10 +20,10 @@ h3,
 h4,
 h5,
 h6 {
-  color: #dda15e;
-  margin-top: 24px;
+  color: #1a1a1a;
+  margin-top: 32px;
   margin-bottom: 16px;
-  text-shadow: 2px 2px 4px #000;
+  text-shadow: none;
 }
 
 h1 {
@@ -42,30 +42,33 @@ h4,
 h5,
 h6 {
   font-size: 1.2em;
+  font-weight: 600;
 }
 
 a {
-  color: #e0a96d;
+  color: #0066cc;
   text-decoration: none;
-  border-bottom: 2px solid #e0a96d;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s, color 0.2s;
 }
 
 a:hover {
-  color: #f4a261;
-  border-color: #f4a261;
+  color: #004999;
+  border-color: #004999;
 }
 
 ul,
 ol {
-  padding-left: 30px;
+  padding-left: 24px;
 }
 
 code {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  color: #e9c46a;
-  padding: 0.4em 0.6em;
+  background-color: #eef2f6;
+  border-radius: 4px;
+  color: #d6336c;
+  padding: 0.2em 0.4em;
   font-family: "Courier New", monospace;
+  font-size: 0.95em;
 }
 
 pre code {
@@ -73,58 +76,50 @@ pre code {
 }
 
 pre {
-  background-color: #3c3c42;
+  background-color: #eef2f6;
   border-radius: 6px;
   padding: 1em;
-  overflow: auto;
-  box-shadow: 2px 2px 6px #000;
+  overflow-x: auto;
+  box-shadow: none;
 }
 
 blockquote {
-  background-color: #2e2c35;
-  border-left: 4px solid #8d99ae;
-  padding-left: 2em;
-  margin-left: 0;
-  padding-top: 0.5em;
-  padding-bottom: 0.5em;
-  padding-right: 0.5em;
-  color: #ddd;
+  background-color: #f1f1f1;
+  border-left: 4px solid #ccc;
+  padding: 0.75em 1em;
+  margin: 1.5em 0;
+  color: #555;
   font-style: italic;
 }
 
 img {
   max-width: 100%;
   height: auto;
-  border-radius: 6px;
-  border: 3px solid #3c3c42;
-  box-shadow: 3px 3px 6px #000;
+  border-radius: 4px;
+  border: none;
+  box-shadow: none;
+  margin: 20px 0;
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1f1c25;
-  border-radius: 6px;
+  background: #f9f9f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #3c3c42;
-  border-radius: 6px;
-  border: 3px solid #1f1c25;
+  background-color: #cccccc;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #5a5466;
+  background-color: #999999;
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3c3c42 #1f1c25;
-}
-
-::-webkit-scrollbar-corner {
-  background: #1f1c25;
+  scrollbar-color: #cccccc #f9f9f9;
 }

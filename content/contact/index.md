@@ -2,8 +2,19 @@
 
 [< Back Home](/)
 
-Give me a call anytime to chat about Tolkien!
+If you want to talk about:
 
-`555-555-5555`
+- Writing systems from scratch
+- Building things the hard way
+- AI trends and deep learning research
+- Ideas for a new project to build
 
-**"Váya márië."**
+Then go ahead and reach out.
+
+---
+
+You can reach me at: **trashada1@gmail.com**
+
+Or find me on GitHub: [github.com/rashadat1](https://github.com/rashadat1)
+
+I don't check Twitter. I write code.

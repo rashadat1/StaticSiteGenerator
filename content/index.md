@@ -1,46 +1,49 @@
-# Tolkien Fan Club
+# Bit by Bit
 
-![JRR Tolkien sitting](/images/tolkien.png)
+### Building everything you're not supposed to build yourself
 
-Here's the deal, **I like Tolkien**.
+![the challenge before us](/images/heroAndColossusHorz.png)
 
-> "I am in fact a Hobbit in all but size."
->
-> -- J.R.R. Tolkien
+**Nah, I'd win**
 
-## Blog posts
+---
 
-- [Why Glorfindel is More Impressive than Legolas](/blog/glorfindel)
-- [Why Tom Bombadil Was a Mistake](/blog/tom)
-- [The Unparalleled Majesty of "The Lord of the Rings"](/blog/majesty)
+## Philosophy
 
-## Reasons I like Tolkien
+Most engineers look at tools and systems like Redis, Git, Docker, SQLite, Kafka, or production-grade HTTP servers and think,  
+"Someone way smarter than me must have built this."
 
-- You can spend years studying the legendarium and still not understand its depths
-- It can be enjoyed by children and adults alike
-- Disney _didn't ruin it_ (okay, but Amazon might have)
-- It created an entirely new genre of fantasy
+But that’s not how most things are made.  
+They’re not born fully formed — they start small, broken, misunderstood.  
+And they require dedicated, hungry engineers to keep them going.
 
-## My favorite characters (in order)
+The ones who assume these systems are beyond their comprehension  
+will never fully understand how anything works.
 
-1. Gandalf
-2. Bilbo
-3. Sam
-4. Glorfindel
-5. Galadriel
-6. Elrond
-7. Thorin
-8. Sauron
-9. Aragorn
+So that’s what this blog is:  
+My journey toward mastery — building the things I use from scratch,  
+bit by bit, until nothing feels like magic.
 
-Here's what `elflang` looks like (the perfect coding language):
+## Posts
 
-```
-func main(){
-    fmt.Println("Aiya, Ambar!")
-}
-```
+- [How I Built Redis from Scratch (and the Shit Ton I Learned Doing It)](/blog/redis)
+- [Writing an HTTP Server Without a Framework (Because Therapy is Expensive)](/blog/httpServer)
+- [Making My Own Static Site Generator, Because of Course I Did](/blog/staticSite)
+- [I Built GPT from Scratch (No, Really)](/blog/gpt)
+
+## Byte-Level Chronicles
+
+- [Not a Single Byte Goes to Waste (Redis RDB Persistence Deep Dive)](/chronicles/rdb)
+- [My Attempt at Full-Proof HTTP Header Validation](/chronicles/content-length)
+- [Wiring my HTTP Server and Redis Server Together](/chronicles/http_redis)
+- [My Paranoid Crusade Against JWT](/chronicles/antiJwt)
+
+---
+
+## About This Site
+
+This blog is built with my own static site generator.  
+No frameworks. No themes. No templates. Just a Python engine that translates
+pure markdown into html
 
 Want to get in touch? [Contact me here](/contact).
-
-This site was generated with a custom-built [static site generator](https://www.boot.dev/courses/build-static-site-generator-python) from the course on [Boot.dev](https://www.boot.dev).
